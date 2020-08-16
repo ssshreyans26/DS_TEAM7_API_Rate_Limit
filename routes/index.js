@@ -1,8 +1,8 @@
 var express = require('express');
-const redis = require('redis');
-const session = require('express-session');
+var redis = require('redis');
+var session = require('express-session');
 var router = express.Router();
-const rateLimiter = require('../middlewares/rate-limiter.js');
+var rateLimiter = require('../middlewares/rate-limiter.js');
 let client = redis.createClient();
 
 client.on('connect', function(){
@@ -20,25 +20,29 @@ router.use(session({
 
 
 router.get('/', function(req, res, next){
-  console.log(req.session.username)
   if(req.session.username){
     client.hgetall(req.session.username, function(err, user){
       res.render('index', {user: user});
     });
   }
-
   else
     res.redirect('/login');
 });
 
+
+//SignUp Page
 router.get('/signup', function(req, res, next) {
   res.render('signup', { title: 'Sign Up Page' });
 });
 
+
+//Login Page
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Login Page' });
 });
 
+
+//Post SignUp
 router.post('/signup', function(req, res, next){
   var name = req.body.name;
   var username = req.body.username;
@@ -48,13 +52,13 @@ router.post('/signup', function(req, res, next){
   else 
     var developers = parseInt(req.body.developers);   
   if(req.body.organizations=="")
-    organizations=10;
+    var organizations=10;
   else
-    organizations = parseInt(req.body.organizations);
+    var organizations = parseInt(req.body.organizations);
   if(req.body.employees=="")
-    employees=10;
+    var employees=10;
   else
-    employees = parseInt(req.body.employees);
+    var employees = parseInt(req.body.employees);
 
   client.hmset(username, [
     'name', name,
@@ -72,11 +76,8 @@ router.post('/signup', function(req, res, next){
 });
 
 
-
+//Post Login
 router.post('/login', function(req, res, next){
-  console.log("Inside Login Post")
-
-
   client.hgetall(req.body.username, function(err, user){
     if(!user){
       res.render('login', {
@@ -101,6 +102,8 @@ router.post('/login', function(req, res, next){
     }
   });
 });
+
+
 
 // Developers Page
 router.get('/developers',function(req, res, next){
