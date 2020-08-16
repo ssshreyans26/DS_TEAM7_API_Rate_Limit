@@ -1,0 +1,65 @@
+ <% include ./header%>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Sign Up<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" method="GET" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class="container mt-4">
+  
+    <h1 class="text-center">Sign-Up</h1>
+    <form method="POST" action="/signup">
+  
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Name">
+      </div>
+        <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Last Name">
+      </div>
+  
+      <div class="form-group">
+        <label>Rate Limits for Developers</label>
+        <input type="text" name="developers" class="form-control" placeholder="Rate Limit for Developer's API">
+      </div>
+  
+      <div class="form-group">
+        <label>Rate Limits for Organizations</label>
+        <input type="text" name="organizations" class="form-control" placeholder="Rate Limit for Organizations's API">
+      </div>
+  
+      <div class="form-group">
+        <label>Rate Limits for Employees</label>
+        <input type="text" name="employees" class="form-control" placeholder="Rate Limit for Employees's API">
+      </div>
+  
+  
+  
+      <input type="submit" class="btn btn-primary" value="Register">
+    </form>
+  </div>
+
+  <% include ./footer%>
