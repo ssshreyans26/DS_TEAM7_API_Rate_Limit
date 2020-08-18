@@ -2,7 +2,7 @@ var express = require('express');
 var redis = require('redis');
 var session = require('express-session');
 var router = express.Router();
-var rateLimiter = require('../middlewares/rate-limiter.js');
+var {TokenBucket,SlidingWindow} = require('../middlewares/rate-limiter.js');
 let client = redis.createClient();
 
 client.on('connect', function(){
@@ -17,11 +17,10 @@ router.use(session({
   saveUninitialized: true
 }));
 
-
-
 router.get('/', function(req, res, next){
   if(req.session.username){
     client.hgetall(req.session.username, function(err, user){
+      if(err) res.render("errorPage", {});
       res.render('index', {user: user});
     });
   }
@@ -47,6 +46,8 @@ router.post('/signup', function(req, res, next){
   var name = req.body.name;
   var username = req.body.username;
   var password = req.body.password;
+  var algo = req.body.algo
+  // var developers = 
   if(req.body.developers=="")
     var developers = 10;
   else 
@@ -65,7 +66,8 @@ router.post('/signup', function(req, res, next){
     'password', password,
     'developers', developers,
     'organizations', organizations,
-    'employees', employees
+    'employees', employees,
+    'algo',algo
   ], function(err, user){
     if(err){
       console.log(err);
@@ -74,6 +76,8 @@ router.post('/signup', function(req, res, next){
     res.redirect('/login');
   });
 });
+
+
 
 
 //Post Login
@@ -89,6 +93,8 @@ router.post('/login', function(req, res, next){
         if(user.password==req.body.password)
         {
           req.session.username=req.body.username;
+          req.session.algo = user.algo
+          console.log({user})
           res.redirect('/');
         }
         else
@@ -108,7 +114,13 @@ router.post('/login', function(req, res, next){
 // Developers Page
 router.get('/developers',function(req, res, next){
   if(req.session.username)
-    rateLimiter(req.session.username,'developers','developers','pagelimitexced',res,client)
+{    if(req.session.algo=="Token Bucket Algorithm"){
+      TokenBucket(req.session.username,'developers','developers','pagelimitexced',res,client)
+    }
+    else{
+      SlidingWindow(req.session.username,'developers','developers','pagelimitexced',res,client)
+    }
+}
   else
     res.redirect('/login');
 });
@@ -116,7 +128,12 @@ router.get('/developers',function(req, res, next){
 // Companies Page
 router.get('/organizations', function(req, res, next){
   if(req.session.username)
-    rateLimiter(req.session.username,'organizations','organizations','pagelimitexced',res,client)
+  {    if(req.session.algo=="Token Bucket Algorithm"){
+    TokenBucket(req.session.username,'organizations','organizations','pagelimitexced',res,client)
+  }
+  else{
+    SlidingWindow(req.session.username,'organizations','organizations','pagelimitexced',res,client)
+  }}
   else
     res.redirect('/login');
 });
@@ -124,8 +141,12 @@ router.get('/organizations', function(req, res, next){
 // Students Page
 router.get('/employees', function(req, res, next){
   if(req.session.username)
-    rateLimiter(req.session.username,'employees','employees','pagelimitexced',res,client)
-  else
+  {    if(req.session.algo=="Token Bucket Algorithm"){
+    TokenBucket(req.session.username,'employees','employees','pagelimitexced',res,client)
+  }
+  else{
+    SlidingWindow(req.session.username,'employees','employees','pagelimitexced',res,client)
+  }}  else
     res.redirect('/login');
 });
 

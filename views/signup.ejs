@@ -1,7 +1,7 @@
  <% include ./header%>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="#">API Rate Limiter</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -13,53 +13,151 @@
         <li class="nav-item">
           <a class="nav-link" method="GET" href="/login">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul>
+        </ul>
     </div>
   </nav>
   
   <div class="container mt-4">
   
-    <h1 class="text-center">Sign-Up</h1>
+    <h1 class="text-center">SIGN UP</h1>
     <form method="POST" action="/signup">
-  
+    <div class="row">
+    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="form-group">
         <label>Name</label>
         <input type="text" name="name" class="form-control" placeholder="Name">
       </div>
+    </div>
+    </div>
+      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="form-group">
         <label>Username</label>
         <input type="text" name="username" class="form-control" placeholder="Username">
       </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+      <div class="col-md-12">
       <div class="form-group">
         <label>Password</label>
         <input type="password" name="password" class="form-control" placeholder="Last Name">
       </div>
-  
+    </div>
+  </div>
+   <div class="col-md-6">
+      <div class="col-md-12">
       <div class="form-group">
-        <label>Rate Limits for Developers</label>
+        <label>Developer Rate Limit</label>
         <input type="text" name="developers" class="form-control" placeholder="Rate Limit for Developer's API">
       </div>
-  
+    </div>
+  </div>
+  </div>
+
+    <div class="row">
+    <div class="col-md-6">
+      <div class="col-md-12">
+
       <div class="form-group">
-        <label>Rate Limits for Organizations</label>
+        <label>Organization Rate Limit</label>
         <input type="text" name="organizations" class="form-control" placeholder="Rate Limit for Organizations's API">
       </div>
+    </div>
+  </div>
   
+  <div class="col-md-6">
+      <div class="col-md-12">
       <div class="form-group">
-        <label>Rate Limits for Employees</label>
+        <label>Employee Rate Limit</label>
         <input type="text" name="employees" class="form-control" placeholder="Rate Limit for Employees's API">
       </div>
-  
-  
-  
-      <input type="submit" class="btn btn-primary" value="Register">
+    </div>
+  </div>
+</div>
+<div class="col-md-6">
+      <div class="col-md-12">
+      <div class="form-group">
+        <label>Select Algorithm to implement Rate Limit</label>
+        <select name="algo"class="form-control" id="sel1">
+        <option>Token Bucket Algorithm</option>
+        <option>Sliding Window Algorithm</option>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-12 text-center">
+<input type="submit" class="btn btn-primary" value="SIGN UP">
+</div>
     </form>
   </div>
 
   <% include ./footer%>
+
+  <style>
+    body {
+
+      background: rgb(28,4,73);
+      background: linear-gradient(90deg, rgba(28,4,73,1) 0%, rgba(25,196,161,1) 41%, rgba(37,11,167,1) 93%);
+      }
+  .bg-light
+  {
+      background: rgb(28,4,73);
+      background: linear-gradient(90deg, rgba(28,4,73,1) 0%, rgba(25,196,161,1) 41%, rgba(37,11,167,1) 93%);
+  }
+  form label {
+        opacity:1;
+        color:white;
+        font-weight:bold;
+         font-family:;
+         font-size:25px;
+         font:serif;
+   }
+   h1 {
+  opacity:1;
+  text-align: center;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  padding:20px;
+  border: 3px ;
+  border-width:thick;
+  border-bottom-left-radius: 50px 40px;
+  border-top-right-radius: 50px 40px;
+  padding-bottom:25px;
+  font-family: Georgia, serif;
+  }
+
+  .btn
+    {
+    color:white;
+    font-size:25px;
+    font-style:bold;
+    margin-top:20px;
+    background:black;
+    opacity:1;
+    border:none;
+    text-align:middle;
+  }
+
+ .navbar-brand
+{
+  font-family: Georgia, sans-serif;
+  color:grey;
+  font-size: larger;
+  margin: 3px;
+}
+.navbar-nav > li{
+  padding-left:10px;
+  padding-right:10px;
+
+}
+</style>
+
+</style>

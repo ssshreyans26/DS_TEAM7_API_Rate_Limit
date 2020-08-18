@@ -1,3 +1,38 @@
 <% include ./header%>
-<h1>YOUR PAGE LIMIT HAS EXCEDED</h1>
+<div class="container">
+<div class="box-1">
+  <h1>Oops! 404 Not Found</h1>
+  <p>Requested Page Not Found.<br>Rate Limit Exceeded.<br>Try again after 60 seconds.</p>
+</div>
+</div>
 <% include ./footer%>
+<style>
+body {
+
+      background: rgb(28,4,73);
+      background: linear-gradient(90deg, rgba(28,4,73,1) 0%, rgba(25,196,161,1) 41%, rgba(37,11,167,1) 93%);
+      }
+
+
+.box-1 {
+	background-color: black;
+	opacity:0.8;
+	color:white;
+	border:5px white solid;
+	padding:20px;
+	margin:100px;
+}
+
+.container{
+	width:80%;
+	margin:auto;
+}
+
+.box-1 h1{
+	font-family:Tahoma;
+	font-weight:800;
+}
+
+
+
+</style>
