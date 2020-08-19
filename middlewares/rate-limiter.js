@@ -1,5 +1,17 @@
-const moment = require("moment")
-function TokenBucket(username, pageLimit, api, errorPage, res, client) {
+const moment = require("moment");
+
+/**
+ * Token-Bucket Algorithm to limit number of requests coming from the user.
+ * @param {string} username 
+ * @param {string} api 
+ * @param {string} errorPage 
+ * @param {object} res 
+ * @param {object} client
+ * @returns 
+ * This function returns an error page if it encounter an error or else it renders the page requested. 
+ * If the rate-limit has exceeded then it renders the page limit exceeded page. 
+ */
+function TokenBucket(username, api, errorPage, res, client) {
   var key = username + api;
   //If Key has not get expired
   client.exists(key, function (err, reply) {
@@ -14,10 +26,10 @@ function TokenBucket(username, pageLimit, api, errorPage, res, client) {
       });
     } else {
       client.hgetall(username, function (err, user) {
-        if (pageLimit == "developers") var access_limit = user.developers;
-        else if (pageLimit == "organizations")
+        if (api == "developers") var access_limit = user.developers;
+        else if (api == "organizations")
           var access_limit = user.organizations;
-        else if (pageLimit == "employees") var access_limit = user.employees;
+        else if (api == "employees") var access_limit = user.employees;
         //Set Rate-Limit for particular page and user
         client.set(key, access_limit);
         //Key will expire after 1 minute
@@ -30,10 +42,18 @@ function TokenBucket(username, pageLimit, api, errorPage, res, client) {
   });
 }
 
-/** 
- * @parameter String username
- * */
-function SlidingWindow(username, pageLimit, api, errorPage, res, client) {
+/**
+ * Sliding-Window Algorithm to limit number of requests coming from the user.
+ * @param {string} username 
+ * @param {string} api 
+ * @param {string} errorPage 
+ * @param {object} res 
+ * @param {object} client
+ * @returns 
+ * This function returns an error page if it encounter an error or else it renders the page requested. 
+ * If the rate-limit has exceeded then it renders the page limit exceeded page. 
+ */
+function SlidingWindow(username, api, errorPage, res, client) {
   var key = username + api;
   client.exists(key, (err, reply) => {
     if (err) {
@@ -57,10 +77,8 @@ function SlidingWindow(username, pageLimit, api, errorPage, res, client) {
           }
         });
 
-        // RequestCountPerMinutes.forEach((item) => {
-        // });
-        console.log({thresHold});
 
+        console.log({thresHold});
         if (thresHold >= data[0].access_limit) {
           console.log({ error: 1, message: "throttle limit exceeded" });
           res.render(errorPage);
@@ -76,11 +94,11 @@ function SlidingWindow(username, pageLimit, api, errorPage, res, client) {
           if (!isFound) {
             client.hgetall(username, function (err, user) {
               console.log({user});
-              if (pageLimit == "developers") 
+              if (api == "developers") 
                 var access_limit = user.developers;
-              else if (pageLimit == "organizations")
+              else if (api == "organizations")
                 var access_limit = user.organizations;
-              else if (pageLimit == "employees")
+              else if (api == "employees")
                 var access_limit = user.employees;
               //Set Rate-Limit for particular page and user
               const x = {
@@ -102,13 +120,12 @@ function SlidingWindow(username, pageLimit, api, errorPage, res, client) {
       });
     } else {
       client.hgetall(username, function (err, user) {
-        if (pageLimit == "developers") 
+        if (api == "developers") 
            var access_limit = user.developers;
-        else if (pageLimit == "organizations")
+        else if (api == "organizations")
           var access_limit = user.organizations;
-        else if (pageLimit == "employees") 
+        else if (api == "employees") 
            var access_limit = user.employees;
-        //Set Rate-Limit for particular page and user
         let data = [];
         let requestData = {
           requestTime: moment().unix(),
