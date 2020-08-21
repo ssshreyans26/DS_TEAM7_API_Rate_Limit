@@ -67,7 +67,7 @@ router.post("/signup", function (req, res, next) {
   else var employees = parseInt(req.body.employees);
 
   client.hmset(
-    username,
+    req.body.username,
     [
       "name",req.body.name,
       "password",req.body.password,
