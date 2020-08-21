@@ -31,10 +31,10 @@ router.use(
 router.get("/", function (req, res, next) {
   if (req.session.username) {
     client.hgetall(req.session.username, function (err, user) {
-      if (err) res.render("errorPage", {});
+      if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
       res.render("index", { user: user });
     });
-  } else res.redirect("/login");
+  } else res.render("login",{error:"Please Log In"});
 });
 
 /**
@@ -42,14 +42,14 @@ router.get("/", function (req, res, next) {
  * This route will render the signup page.
  * */
 router.get("/signup", function (req, res, next) {
-  res.render("signup", { title: "Sign Up Page" });
+  res.render("signup", { title: "Sign Up Page",error:"" });
 });
 
 /**
  * GET REQUEST TO RENDER: SIGNUP PAGE
  * */
 router.get("/login", function (req, res, next) {
-  res.render("login", { title: "Login Page" });
+  res.render("login", { title: "Login Page" ,error:""});
 });
 
 /**
@@ -65,7 +65,6 @@ router.post("/signup", function (req, res, next) {
   else var organizations = parseInt(req.body.organizations);
   if (req.body.employees == "") var employees = 10;
   else var employees = parseInt(req.body.employees);
-
   client.hmset(
     req.body.username,
     [
@@ -77,11 +76,11 @@ router.post("/signup", function (req, res, next) {
       "algo",req.body.algo,
     ],
     function (err, user) {
-      if (err) {
-        console.log(err);
-      }
-      console.log("User Signed Up Successfully", { user });
-      res.redirect("/login");
+      if (err) res.render("error", {message: "There is a Database Error. Please Try Again "})
+      console.log("User Signed Up Successfully");
+      req.session.username = req.body.username
+      req.session.algo = req.body.algo
+      res.redirect("/");
     }
   );
 });
@@ -92,9 +91,10 @@ router.post("/signup", function (req, res, next) {
  */
 router.post("/login", function (req, res, next) {
   client.hgetall(req.body.username, function (err, user) {
+    if (err) res.render("error", {message: "There is a Database Error. Please Try Again "})
     if (!user) {
-      res.render("login", {
-        error: "User does not exist",
+      res.render("signup", {
+        error: "You haven't Signed Up. Please Signup!",
       });
     } else {
       client.hgetall(req.body.username, function (err, user) {
@@ -105,7 +105,7 @@ router.post("/login", function (req, res, next) {
           res.redirect("/");
         } else {
           res.render("login", {
-            error: "Wrong Credentials",
+            error: "Wrong Credentials. Please Try Again",
           });
         }
       });
@@ -119,8 +119,7 @@ router.post("/login", function (req, res, next) {
  */
 router.post('/logout',function(req,res,next){
   req.session.destroy(function(err){
-    if(err)
-      console.log(err);
+    if (err) res.render("error", {message: "There is a Database Error. Please Try to Logout again "})
     res.redirect('/login');
   });
 })

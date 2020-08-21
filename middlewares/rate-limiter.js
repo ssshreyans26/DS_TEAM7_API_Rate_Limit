@@ -15,6 +15,7 @@ function TokenBucket(username, api, errorPage, res, client) {
   var key = username + api;
   //If Key has not get expired
   client.exists(key, function (err, reply) {
+    if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
     if (reply == 1) {
       client.get(key, function (err, count) {
         if (count > 1) {
@@ -26,6 +27,7 @@ function TokenBucket(username, api, errorPage, res, client) {
       });
     } else {
       client.hgetall(username, function (err, user) {
+        if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
         if (api == "developers") var access_limit = user.developers;
         else if (api == "organizations")
           var access_limit = user.organizations;
@@ -34,7 +36,7 @@ function TokenBucket(username, api, errorPage, res, client) {
         client.set(key, access_limit);
         //Key will expire after 1 minute
         client.expire(key, 60);
-        if (err) console.log(err);
+        
         if (access_limit > 0) res.render(api);
         else res.render(errorPage);
       });
@@ -64,6 +66,7 @@ function SlidingWindow(username, api, errorPage, res, client) {
     if (reply == 1) {
       console.log("Key exists")
       client.get(key, (err, redisResponse) => {
+        if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
         let data = JSON.parse(redisResponse);
         let currentTime = moment().unix();
         let lessThanMinuteAgo = moment().subtract(1, "minute").unix();
@@ -76,8 +79,6 @@ function SlidingWindow(username, api, errorPage, res, client) {
             
           }
         });
-
-
         console.log({thresHold});
         if (thresHold >= data[0].access_limit) {
           console.log({ error: 1, message: "throttle limit exceeded" });
@@ -93,6 +94,7 @@ function SlidingWindow(username, api, errorPage, res, client) {
 
           if (!isFound) {
             client.hgetall(username, function (err, user) {
+              if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
               console.log({user});
               if (api == "developers") 
                 var access_limit = user.developers;
@@ -120,6 +122,7 @@ function SlidingWindow(username, api, errorPage, res, client) {
       });
     } else {
       client.hgetall(username, function (err, user) {
+        if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
         if (api == "developers") 
            var access_limit = user.developers;
         else if (api == "organizations")
@@ -135,7 +138,6 @@ function SlidingWindow(username, api, errorPage, res, client) {
         data.push(requestData);
         client.set(key, JSON.stringify(data));
       });
-
       res.render(api);
     }
   });
