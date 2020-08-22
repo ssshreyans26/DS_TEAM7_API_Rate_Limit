@@ -42,14 +42,14 @@ router.get("/", function (req, res, next) {
  * This route will render the signup page.
  * */
 router.get("/signup", function (req, res, next) {
-  res.render("signup", { title: "Sign Up Page",error:"" });
+  res.render("signup", { title: "Sign Up Page",error:False });
 });
 
 /**
  * GET REQUEST TO RENDER: SIGNUP PAGE
  * */
 router.get("/login", function (req, res, next) {
-  res.render("login", { title: "Login Page" ,error:""});
+  res.render("login", { title: "Login Page" ,error:False});
 });
 
 /**

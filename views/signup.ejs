@@ -26,7 +26,7 @@
     <div class="col-md-12">
       <div class="form-group">
         <label>Name</label>
-        <input type="text" name="name" class="form-control" placeholder="Enter Your Name">
+        <input type="text" name="name" class="form-control" placeholder="Enter Your Name" required>
       </div>
     </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="col-md-12">
         <div class="form-group">
         <label>Username</label>
-        <input type="text" name="username" class="form-control" placeholder="Enter Your Username">
+        <input type="text" name="username" class="form-control" placeholder="Enter Your Username" required>
       </div>
     </div>
     </div>
@@ -45,7 +45,7 @@
       <div class="col-md-12">
       <div class="form-group">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Enter Your Password">
+        <input type="password" name="password" class="form-control" placeholder="Enter Your Password" required>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
       <div class="col-md-12">
       <div class="form-group">
         <label>Developer Rate Limit</label>
-        <input type="text" name="developers" class="form-control" placeholder="Rate Limit for Developer's API">
+        <input type="number" name="developers" class="form-control" placeholder="Rate Limit for Developer's API">
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@
 
       <div class="form-group">
         <label>Organization Rate Limit</label>
-        <input type="text" name="organizations" class="form-control" placeholder="Rate Limit for Organizations's API">
+        <input type="number" name="organizations" class="form-control" placeholder="Rate Limit for Organizations's API">
       </div>
     </div>
   </div>
@@ -74,7 +74,7 @@
       <div class="col-md-12">
       <div class="form-group">
         <label>Employee Rate Limit</label>
-        <input type="text" name="employees" class="form-control" placeholder="Rate Limit for Employees's API">
+        <input type="number" name="employees" class="form-control" placeholder="Rate Limit for Employees's API">
       </div>
     </div>
   </div>
@@ -96,7 +96,12 @@
 <input type="submit" class="btn btn-primary" value="SIGN UP">
 </div>
     </form>
-    <p class="text-center"><%=error%></p>
+    <% if (error) { %>
+      <div class="alert alert-danger mt-4">
+        <strong>Error!</strong> <%=error%> !
+      </div>
+      <%}%>
+    </div>
   </div>
 
   <% include ./footer%>
