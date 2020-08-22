@@ -59,11 +59,11 @@ router.get("/login", function (req, res, next) {
  *
  * */
 router.post("/signup", function (req, res, next) {
-  if (req.body.developers == "") var developers = 10;
+  if (req.body.developers == "") var developers = 15;
   else var developers = parseInt(req.body.developers);
-  if (req.body.organizations == "") var organizations = 10;
+  if (req.body.organizations == "") var organizations = 15;
   else var organizations = parseInt(req.body.organizations);
-  if (req.body.employees == "") var employees = 10;
+  if (req.body.employees == "") var employees = 15;
   else var employees = parseInt(req.body.employees);
   client.hmset(
     req.body.username,
