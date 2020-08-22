@@ -21,7 +21,6 @@ function TokenBucket(username, api, errorPage, res, client) {
         if (count > 1) {
           res.render(api);
           client.decr(key, function (err, count) {
-            console.log("Number of times user can access this page", { count });
           });
         } else res.render(errorPage);
       });
@@ -58,13 +57,8 @@ function TokenBucket(username, api, errorPage, res, client) {
 function SlidingWindow(username, api, errorPage, res, client) {
   var key = username + api;
   client.exists(key, (err, reply) => {
-    if (err) {
-      console.log("problem with redis");
-      system.exit(0);
-    }
-
+    if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
     if (reply == 1) {
-      console.log("Key exists")
       client.get(key, (err, redisResponse) => {
         if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
         let data = JSON.parse(redisResponse);
@@ -72,16 +66,16 @@ function SlidingWindow(username, api, errorPage, res, client) {
         let lessThanMinuteAgo = moment().subtract(1, "minute").unix();
         let thresHold = 0;
         data.forEach((item) => {
-          console.log(item.requestTime, lessThanMinuteAgo, item);
+          
           if( item.requestTime > lessThanMinuteAgo){
-            console.log("sdhjgfhdfs");
+            
             thresHold += item.counter;
             
           }
         });
-        console.log({thresHold});
+        
         if (thresHold >= data[0].access_limit) {
-          console.log({ error: 1, message: "throttle limit exceeded" });
+          
           res.render(errorPage);
         } else {
           let isFound = false;
@@ -95,7 +89,7 @@ function SlidingWindow(username, api, errorPage, res, client) {
           if (!isFound) {
             client.hgetall(username, function (err, user) {
               if (err) res.render("error", {message: "There is a Database Error. Please Try Again "});
-              console.log({user});
+              
               if (api == "developers") 
                 var access_limit = user.developers;
               else if (api == "organizations")
@@ -103,20 +97,19 @@ function SlidingWindow(username, api, errorPage, res, client) {
               else if (api == "employees")
                 var access_limit = user.employees;
               //Set Rate-Limit for particular page and user
-              const x = {
+              const newrequest = {
                 requestTime: currentTime,
                 counter: 1,
                 access_limit: access_limit,
               };
-              console.log(x, data);
-              data.push(x);
+             
+              data.push(newrequest);
               client.set(key, JSON.stringify(data));
             });
           }else{
 
             client.set(key, JSON.stringify(data));
           }
-          console.log(JSON.stringify(data, null, 4));
           res.render(api);
         }
       });

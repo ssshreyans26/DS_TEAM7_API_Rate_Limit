@@ -1,2 +1,0 @@
-1.Error Handling for every route.
-2.Add Navbar in error pages also.
