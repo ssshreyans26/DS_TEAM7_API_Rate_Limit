@@ -1,0 +1,62 @@
+body {
+  background: rgb(28, 4, 73);
+  background: linear-gradient(
+    90deg,
+    rgba(28, 4, 73, 1) 0%,
+    rgba(25, 196, 161, 1) 41%,
+    rgba(37, 11, 167, 1) 93%
+  );
+}
+.bg-light {
+  background: rgb(28, 4, 73);
+  background: linear-gradient(
+    90deg,
+    rgba(28, 4, 73, 1) 0%,
+    rgba(25, 196, 161, 1) 41%,
+    rgba(37, 11, 167, 1) 93%
+  );
+}
+form label {
+  opacity: 1;
+  color: white;
+  font-weight: bold;
+  font-family: ;
+  font-size: 25px;
+  font: serif;
+}
+h1 {
+  opacity: 1;
+  text-align: center;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  padding: 20px;
+  border: 3px;
+  border-width: thick;
+  border-bottom-left-radius: 50px 40px;
+  border-top-right-radius: 50px 40px;
+  padding-bottom: 25px;
+  font-family: Georgia, serif;
+}
+
+.btn {
+  color: white;
+  font-size: 25px;
+  font-style: bold;
+  margin-top: 20px;
+  background: black;
+  opacity: 1;
+  border: none;
+  text-align: middle;
+}
+
+.navbar-brand {
+  font-family: Georgia, sans-serif;
+  color: grey;
+  font-size: larger;
+  margin: 3px;
+}
+.navbar-nav > li {
+  padding-left: 10px;
+  padding-right: 10px;
+}
